@@ -17,7 +17,8 @@
 
 #SBATCH -p gpu
 #SBATCH --gres=gpu:1
-#SBATCH -n 8
+#SBATCH --ntasks-per-node=1      # must equal number of GPUs (Lightning/DDP)
+#SBATCH --cpus-per-task=8        # DataLoader workers + room to spare
 #SBATCH --mem=64G
 #SBATCH -t 24:00:00
 #SBATCH -J lewm_train
@@ -85,8 +86,17 @@ echo "data: $DATA_FILE ($(du -h "$DATA_FILE" | cut -f1))"
 export OMP_NUM_THREADS=1
 export TOKENIZERS_PARALLELISM=false
 
-# Uncomment to run wandb offline (e.g. when debugging on a login node).
-# export WANDB_MODE=offline
+# --- wandb ---
+# The default config in config/train/lewm.yaml uses entity=lewm, project=lewm
+# (the upstream authors' team) which your account cannot write to.
+# Pick ONE of the options below:
+#   (a) Set WANDB_MODE=offline to log locally only (default here: safe & no 401).
+#   (b) Change entity/project in config/train/lewm.yaml to your own team/project,
+#       then `wandb login` once and comment the line below.
+#   (c) Override per-run on sbatch:
+#         sbatch train.sh pusht wandb.config.entity=YOUR wandb.config.project=YOUR
+export WANDB_MODE=${WANDB_MODE:-online}
+echo "WANDB_MODE = $WANDB_MODE"
 
 # --- train -------------------------------------------------------
 srun python train.py data="$DATA" $EXTRA_ARGS
