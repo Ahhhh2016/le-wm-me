@@ -1,0 +1,129 @@
+Error executing job with overrides: ['data=pusht']
+Error executing job with overrides: ['data=pusht']
+Error executing job with overrides: ['data=pusht']
+Error executing job with overrides: ['data=pusht']
+Error executing job with overrides: ['data=pusht']
+Error executing job with overrides: ['data=pusht']
+Error executing job with overrides: ['data=pusht']
+Error executing job with overrides: ['data=pusht']
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 54, in run
+    dataset = swm.data.HDF5Dataset(**cfg.data.dataset, transform=None)
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_worldmodel/data/dataset.py", line 134, in __init__
+    with h5py.File(self.h5_path, 'r') as f:
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/h5py/_hl/files.py", line 555, in __init__
+    fid = make_fid(name, mode, userblock_size, fapl, fcpl, swmr=swmr)
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/h5py/_hl/files.py", line 232, in make_fid
+    fid = h5f.open(name, flags, fapl=fapl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 54, in run
+    dataset = swm.data.HDF5Dataset(**cfg.data.dataset, transform=None)
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_worldmodel/data/dataset.py", line 134, in __init__
+    with h5py.File(self.h5_path, 'r') as f:
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/h5py/_hl/files.py", line 555, in __init__
+    fid = make_fid(name, mode, userblock_size, fapl, fcpl, swmr=swmr)
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/h5py/_hl/files.py", line 232, in make_fid
+    fid = h5f.open(name, flags, fapl=fapl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5f.pyx", line 106, in h5py.h5f.open
+FileNotFoundError: [Errno 2] Unable to synchronously open file (unable to open file: name = '/oscar/scratch/yliu674/stablewm_home/pusht_expert_train.h5', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)
+  File "h5py/h5f.pyx", line 106, in h5py.h5f.open
+FileNotFoundError: [Errno 2] Unable to synchronously open file (unable to open file: name = '/oscar/scratch/yliu674/stablewm_home/pusht_expert_train.h5', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+Traceback (most recent call last):
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 54, in run
+    dataset = swm.data.HDF5Dataset(**cfg.data.dataset, transform=None)
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_worldmodel/data/dataset.py", line 134, in __init__
+    with h5py.File(self.h5_path, 'r') as f:
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/h5py/_hl/files.py", line 555, in __init__
+    fid = make_fid(name, mode, userblock_size, fapl, fcpl, swmr=swmr)
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/h5py/_hl/files.py", line 232, in make_fid
+    fid = h5f.open(name, flags, fapl=fapl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5f.pyx", line 106, in h5py.h5f.open
+FileNotFoundError: [Errno 2] Unable to synchronously open file (unable to open file: name = '/oscar/scratch/yliu674/stablewm_home/pusht_expert_train.h5', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+Traceback (most recent call last):
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 54, in run
+    dataset = swm.data.HDF5Dataset(**cfg.data.dataset, transform=None)
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_worldmodel/data/dataset.py", line 134, in __init__
+    with h5py.File(self.h5_path, 'r') as f:
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/h5py/_hl/files.py", line 555, in __init__
+    fid = make_fid(name, mode, userblock_size, fapl, fcpl, swmr=swmr)
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/h5py/_hl/files.py", line 232, in make_fid
+    fid = h5f.open(name, flags, fapl=fapl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5f.pyx", line 106, in h5py.h5f.open
+FileNotFoundError: [Errno 2] Unable to synchronously open file (unable to open file: name = '/oscar/scratch/yliu674/stablewm_home/pusht_expert_train.h5', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+Traceback (most recent call last):
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 54, in run
+    dataset = swm.data.HDF5Dataset(**cfg.data.dataset, transform=None)
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_worldmodel/data/dataset.py", line 134, in __init__
+    with h5py.File(self.h5_path, 'r') as f:
+Traceback (most recent call last):
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/h5py/_hl/files.py", line 555, in __init__
+    fid = make_fid(name, mode, userblock_size, fapl, fcpl, swmr=swmr)
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/h5py/_hl/files.py", line 232, in make_fid
+    fid = h5f.open(name, flags, fapl=fapl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 54, in run
+    dataset = swm.data.HDF5Dataset(**cfg.data.dataset, transform=None)
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_worldmodel/data/dataset.py", line 134, in __init__
+    with h5py.File(self.h5_path, 'r') as f:
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/h5py/_hl/files.py", line 555, in __init__
+    fid = make_fid(name, mode, userblock_size, fapl, fcpl, swmr=swmr)
+  File "h5py/h5f.pyx", line 106, in h5py.h5f.open
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/h5py/_hl/files.py", line 232, in make_fid
+    fid = h5f.open(name, flags, fapl=fapl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+FileNotFoundError: [Errno 2] Unable to synchronously open file (unable to open file: name = '/oscar/scratch/yliu674/stablewm_home/pusht_expert_train.h5', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5f.pyx", line 106, in h5py.h5f.open
+FileNotFoundError: [Errno 2] Unable to synchronously open file (unable to open file: name = '/oscar/scratch/yliu674/stablewm_home/pusht_expert_train.h5', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+Traceback (most recent call last):
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 54, in run
+    dataset = swm.data.HDF5Dataset(**cfg.data.dataset, transform=None)
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_worldmodel/data/dataset.py", line 134, in __init__
+    with h5py.File(self.h5_path, 'r') as f:
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/h5py/_hl/files.py", line 555, in __init__
+    fid = make_fid(name, mode, userblock_size, fapl, fcpl, swmr=swmr)
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/h5py/_hl/files.py", line 232, in make_fid
+    fid = h5f.open(name, flags, fapl=fapl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5f.pyx", line 106, in h5py.h5f.open
+FileNotFoundError: [Errno 2] Unable to synchronously open file (unable to open file: name = '/oscar/scratch/yliu674/stablewm_home/pusht_expert_train.h5', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+Traceback (most recent call last):
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 54, in run
+    dataset = swm.data.HDF5Dataset(**cfg.data.dataset, transform=None)
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_worldmodel/data/dataset.py", line 134, in __init__
+    with h5py.File(self.h5_path, 'r') as f:
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/h5py/_hl/files.py", line 555, in __init__
+    fid = make_fid(name, mode, userblock_size, fapl, fcpl, swmr=swmr)
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/h5py/_hl/files.py", line 232, in make_fid
+    fid = h5f.open(name, flags, fapl=fapl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5f.pyx", line 106, in h5py.h5f.open
+FileNotFoundError: [Errno 2] Unable to synchronously open file (unable to open file: name = '/oscar/scratch/yliu674/stablewm_home/pusht_expert_train.h5', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+srun: error: gpu3002: tasks 0-7: Exited with exit code 1

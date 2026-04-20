@@ -1,0 +1,25 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 1806245
+##  Job Name : lewm_train
+##  Nodelist : gpu3002
+##      CPUs : 8
+##  Mem/Node : 65536 MB
+## Directory : /oscar/scratch/yliu674/le-wm-me
+##   Job Started : Mon Apr 20 04:11:11 PM EDT 2026
+###############################################################################
+============================================
+Job ID:    1806245
+Data:      pusht
+Extra:     
+Node:      gpu3002.oscar.ccv.brown.edu
+Started:   Mon Apr 20 04:11:11 PM EDT 2026
+GPU:       NVIDIA L40S
+============================================
+python: /oscar/scratch/yliu674/.venv/bin/python  (Python 3.10.20)
+sys.executable = /oscar/scratch/yliu674/.venv/bin/python
+datasets 4.8.4 at /oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/datasets
+datasets.config OK
+stable_pretraining OK, torch 2.11.0+cu130 cuda True
+============================================
+Finished:  Mon Apr 20 04:12:18 PM EDT 2026
+============================================

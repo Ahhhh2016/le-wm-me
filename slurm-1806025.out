@@ -1,0 +1,20 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 1806025
+##  Job Name : lewm_train
+##  Nodelist : gpu3103
+##      CPUs : 8
+##  Mem/Node : 65536 MB
+## Directory : /oscar/scratch/yliu674/le-wm-me
+##   Job Started : Mon Apr 20 03:53:03 PM EDT 2026
+###############################################################################
+============================================
+Job ID:    1806025
+Data:      pusht
+Extra:     trainer.max_epochs=1
+Node:      gpu3103.oscar.ccv.brown.edu
+Started:   Mon Apr 20 03:53:03 PM EDT 2026
+GPU:       NVIDIA L40S
+============================================
+============================================
+Finished:  Mon Apr 20 03:53:39 PM EDT 2026
+============================================

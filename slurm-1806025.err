@@ -1,0 +1,129 @@
+Traceback (most recent call last):
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 7, in <module>
+    import stable_pretraining as spt
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/__init__.py", line 29, in <module>
+    from . import backbone, callbacks, data, losses, module, optim, static, utils
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/callbacks/__init__.py", line 13, in <module>
+    from .trainer_info import LoggingCallback, ModuleSummary, TrainerInfo, SLURMInfo
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/callbacks/trainer_info.py", line 8, in <module>
+    from ..data.module import DataModule
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/__init__.py", line 7, in <module>
+    from . import dataset_stats, sampler, synthetic_data, transforms
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/synthetic_data.py", line 15, in <module>
+    from .datasets import Dataset
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/datasets.py", line 14, in <module>
+    from datasets import config as hf_config
+ImportError: cannot import name 'config' from 'datasets' (/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/datasets/__init__.py)
+Traceback (most recent call last):
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 7, in <module>
+    import stable_pretraining as spt
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/__init__.py", line 29, in <module>
+    from . import backbone, callbacks, data, losses, module, optim, static, utils
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/callbacks/__init__.py", line 13, in <module>
+    from .trainer_info import LoggingCallback, ModuleSummary, TrainerInfo, SLURMInfo
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/callbacks/trainer_info.py", line 8, in <module>
+    from ..data.module import DataModule
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/__init__.py", line 7, in <module>
+    from . import dataset_stats, sampler, synthetic_data, transforms
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/synthetic_data.py", line 15, in <module>
+    from .datasets import Dataset
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/datasets.py", line 14, in <module>
+    from datasets import config as hf_config
+ImportError: cannot import name 'config' from 'datasets' (/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/datasets/__init__.py)
+Traceback (most recent call last):
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 7, in <module>
+    import stable_pretraining as spt
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/__init__.py", line 29, in <module>
+    from . import backbone, callbacks, data, losses, module, optim, static, utils
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/callbacks/__init__.py", line 13, in <module>
+    from .trainer_info import LoggingCallback, ModuleSummary, TrainerInfo, SLURMInfo
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/callbacks/trainer_info.py", line 8, in <module>
+    from ..data.module import DataModule
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/__init__.py", line 7, in <module>
+    from . import dataset_stats, sampler, synthetic_data, transforms
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/synthetic_data.py", line 15, in <module>
+    from .datasets import Dataset
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/datasets.py", line 14, in <module>
+    from datasets import config as hf_config
+ImportError: cannot import name 'config' from 'datasets' (/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/datasets/__init__.py)
+Traceback (most recent call last):
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 7, in <module>
+    import stable_pretraining as spt
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/__init__.py", line 29, in <module>
+    from . import backbone, callbacks, data, losses, module, optim, static, utils
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/callbacks/__init__.py", line 13, in <module>
+    from .trainer_info import LoggingCallback, ModuleSummary, TrainerInfo, SLURMInfo
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/callbacks/trainer_info.py", line 8, in <module>
+    from ..data.module import DataModule
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/__init__.py", line 7, in <module>
+    from . import dataset_stats, sampler, synthetic_data, transforms
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/synthetic_data.py", line 15, in <module>
+    from .datasets import Dataset
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/datasets.py", line 14, in <module>
+    from datasets import config as hf_config
+ImportError: cannot import name 'config' from 'datasets' (/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/datasets/__init__.py)
+Traceback (most recent call last):
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 7, in <module>
+    import stable_pretraining as spt
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/__init__.py", line 29, in <module>
+    from . import backbone, callbacks, data, losses, module, optim, static, utils
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/callbacks/__init__.py", line 13, in <module>
+    from .trainer_info import LoggingCallback, ModuleSummary, TrainerInfo, SLURMInfo
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/callbacks/trainer_info.py", line 8, in <module>
+    from ..data.module import DataModule
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/__init__.py", line 7, in <module>
+    from . import dataset_stats, sampler, synthetic_data, transforms
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/synthetic_data.py", line 15, in <module>
+    from .datasets import Dataset
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/datasets.py", line 14, in <module>
+    from datasets import config as hf_config
+ImportError: cannot import name 'config' from 'datasets' (/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/datasets/__init__.py)
+Traceback (most recent call last):
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 7, in <module>
+    import stable_pretraining as spt
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/__init__.py", line 29, in <module>
+    from . import backbone, callbacks, data, losses, module, optim, static, utils
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/callbacks/__init__.py", line 13, in <module>
+    from .trainer_info import LoggingCallback, ModuleSummary, TrainerInfo, SLURMInfo
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/callbacks/trainer_info.py", line 8, in <module>
+    from ..data.module import DataModule
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/__init__.py", line 7, in <module>
+    from . import dataset_stats, sampler, synthetic_data, transforms
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/synthetic_data.py", line 15, in <module>
+    from .datasets import Dataset
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/datasets.py", line 14, in <module>
+    from datasets import config as hf_config
+ImportError: cannot import name 'config' from 'datasets' (/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/datasets/__init__.py)
+Traceback (most recent call last):
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 7, in <module>
+    import stable_pretraining as spt
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/__init__.py", line 29, in <module>
+    from . import backbone, callbacks, data, losses, module, optim, static, utils
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/callbacks/__init__.py", line 13, in <module>
+    from .trainer_info import LoggingCallback, ModuleSummary, TrainerInfo, SLURMInfo
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/callbacks/trainer_info.py", line 8, in <module>
+    from ..data.module import DataModule
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/__init__.py", line 7, in <module>
+    from . import dataset_stats, sampler, synthetic_data, transforms
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/synthetic_data.py", line 15, in <module>
+    from .datasets import Dataset
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/datasets.py", line 14, in <module>
+    from datasets import config as hf_config
+ImportError: cannot import name 'config' from 'datasets' (/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/datasets/__init__.py)
+Traceback (most recent call last):
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 7, in <module>
+    import stable_pretraining as spt
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/__init__.py", line 29, in <module>
+    from . import backbone, callbacks, data, losses, module, optim, static, utils
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/callbacks/__init__.py", line 13, in <module>
+    from .trainer_info import LoggingCallback, ModuleSummary, TrainerInfo, SLURMInfo
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/callbacks/trainer_info.py", line 8, in <module>
+    from ..data.module import DataModule
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/__init__.py", line 7, in <module>
+    from . import dataset_stats, sampler, synthetic_data, transforms
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/synthetic_data.py", line 15, in <module>
+    from .datasets import Dataset
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/stable_pretraining/data/datasets.py", line 14, in <module>
+    from datasets import config as hf_config
+ImportError: cannot import name 'config' from 'datasets' (/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/datasets/__init__.py)
+srun: error: gpu3103: tasks 0-7: Exited with exit code 1
