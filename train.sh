@@ -58,9 +58,28 @@ python -c "from datasets import config as _; print('datasets.config OK')" \
 python -c "import stable_pretraining; import torch; \
     print('stable_pretraining OK, torch', torch.__version__, 'cuda', torch.cuda.is_available())" || exit 1
 
-# Checkpoint output dir used by train.py (swm.data.utils.get_cache_dir()).
-export STABLEWM_HOME=/oscar/scratch/$USER/stablewm_home
+# $STABLEWM_HOME is where train.py looks for datasets (<name>.h5) and where
+# checkpoints get written. Dataset files must live at $STABLEWM_HOME/<name>.h5
+# (see README.md). Either put/symlink the .h5 into this dir, or point
+# STABLEWM_HOME at the dir that already contains it.
+#
+# Respect an externally provided value (export STABLEWM_HOME=... before sbatch,
+# or `sbatch --export=ALL,STABLEWM_HOME=...`); only fall back to a default.
+: "${STABLEWM_HOME:=/oscar/scratch/$USER/stablewm_home}"
+export STABLEWM_HOME
 mkdir -p "$STABLEWM_HOME"
+echo "STABLEWM_HOME = $STABLEWM_HOME"
+
+# Sanity check: pusht dataset file must exist.
+DATA_FILE="$STABLEWM_HOME/pusht_expert_train.h5"
+if [ ! -e "$DATA_FILE" ]; then
+    echo "ERROR: missing $DATA_FILE"
+    echo "Fix by symlinking or moving it, e.g.:"
+    echo "  ln -sf /oscar/scratch/$USER/le-wm-me/lewm-pusht/pusht_expert_train.h5 \\"
+    echo "         $DATA_FILE"
+    exit 1
+fi
+echo "data: $DATA_FILE ($(du -h "$DATA_FILE" | cut -f1))"
 
 # DataLoader stability.
 export OMP_NUM_THREADS=1
