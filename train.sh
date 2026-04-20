@@ -45,6 +45,19 @@ cd "$SLURM_SUBMIT_DIR"
 # Activate your venv (change the path if yours differs).
 source /oscar/scratch/$USER/.venv/bin/activate
 
+# Fail fast if the environment is not set up correctly.
+# NOTE: this venv is managed by `uv` (no pip). Use `uv pip ...` for installs.
+echo "python: $(which python)  ($(python -V 2>&1))"
+python -c "import sys; print('sys.executable =', sys.executable)"
+python -c "import datasets, os; print('datasets', datasets.__version__, 'at', os.path.dirname(datasets.__file__))"
+python -c "from datasets import config as _; print('datasets.config OK')" \
+    || { echo 'ERROR: HuggingFace datasets broken. Run (inside the venv):'; \
+         echo '  uv pip uninstall datasets'; \
+         echo '  uv pip install --reinstall "datasets>=2.18.0"'; \
+         exit 1; }
+python -c "import stable_pretraining; import torch; \
+    print('stable_pretraining OK, torch', torch.__version__, 'cuda', torch.cuda.is_available())" || exit 1
+
 # Checkpoint output dir used by train.py (swm.data.utils.get_cache_dir()).
 export STABLEWM_HOME=/oscar/scratch/$USER/stablewm_home
 mkdir -p "$STABLEWM_HOME"
