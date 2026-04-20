@@ -1,0 +1,124 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 1806694
+##  Job Name : lewm_train
+##  Nodelist : gpu3106
+##      CPUs : 8
+##  Mem/Node : 65536 MB
+## Directory : /oscar/scratch/yliu674/le-wm-me
+##   Job Started : Mon Apr 20 04:39:10 PM EDT 2026
+###############################################################################
+============================================
+Job ID:    1806694
+Data:      pusht
+Extra:     
+Node:      gpu3106.oscar.ccv.brown.edu
+Started:   Mon Apr 20 04:39:10 PM EDT 2026
+GPU:       NVIDIA L40S
+============================================
+python: /oscar/scratch/yliu674/.venv/bin/python  (Python 3.10.20)
+sys.executable = /oscar/scratch/yliu674/.venv/bin/python
+datasets 4.8.4 at /oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/datasets
+datasets.config OK
+stable_pretraining OK, torch 2.11.0+cu130 cuda True
+STABLEWM_HOME = /users/yliu674/scratch/le-wm-me/lewm-pusht
+data: /users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5 (44G)
+[2026-04-20 16:40:17,706][root][INFO] - Cached 'action' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:17,706][root][INFO] - Cached 'action' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:17,706][root][INFO] - Cached 'action' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:17,706][root][INFO] - Cached 'action' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:17,706][root][INFO] - Cached 'action' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:17,706][root][INFO] - Cached 'action' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:17,706][root][INFO] - Cached 'action' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:17,711][root][INFO] - Cached 'action' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:22,121][root][INFO] - Cached 'proprio' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:22,121][root][INFO] - Cached 'proprio' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:22,121][root][INFO] - Cached 'proprio' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:22,121][root][INFO] - Cached 'proprio' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:22,121][root][INFO] - Cached 'proprio' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:22,121][root][INFO] - Cached 'proprio' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:22,121][root][INFO] - Cached 'proprio' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:22,121][root][INFO] - Cached 'proprio' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:26,314][root][INFO] - Cached 'state' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:26,314][root][INFO] - Cached 'state' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:26,314][root][INFO] - Cached 'state' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:26,314][root][INFO] - Cached 'state' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:26,314][root][INFO] - Cached 'state' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:26,314][root][INFO] - Cached 'state' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:26,314][root][INFO] - Cached 'state' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:40:26,315][root][INFO] - Cached 'state' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+16:40:27.108 | INFO    (3258536, stable_pretraining.backbone.utils) | Created ViT-tiny from scratch with config: {'hidden_size': 192, 'num_hidden_layers': 12, 'num_attention_heads': 3, 'intermediate_size': 768, 'image_size': 224, 'patch_size': 14}
+16:40:27.108 | INFO    (3258538, stable_pretraining.backbone.utils) | Created ViT-tiny from scratch with config: {'hidden_size': 192, 'num_hidden_layers': 12, 'num_attention_heads': 3, 'intermediate_size': 768, 'image_size': 224, 'patch_size': 14}
+16:40:27.108 | INFO    (3258535, stable_pretraining.backbone.utils) | Created ViT-tiny from scratch with config: {'hidden_size': 192, 'num_hidden_layers': 12, 'num_attention_heads': 3, 'intermediate_size': 768, 'image_size': 224, 'patch_size': 14}
+16:40:27.108 | INFO    (3258531, stable_pretraining.backbone.utils) | Created ViT-tiny from scratch with config: {'hidden_size': 192, 'num_hidden_layers': 12, 'num_attention_heads': 3, 'intermediate_size': 768, 'image_size': 224, 'patch_size': 14}
+16:40:27.108 | INFO    (3258532, stable_pretraining.backbone.utils) | Created ViT-tiny from scratch with config: {'hidden_size': 192, 'num_hidden_layers': 12, 'num_attention_heads': 3, 'intermediate_size': 768, 'image_size': 224, 'patch_size': 14}
+16:40:27.108 | INFO    (3258533, stable_pretraining.backbone.utils) | Created ViT-tiny from scratch with config: {'hidden_size': 192, 'num_hidden_layers': 12, 'num_attention_heads': 3, 'intermediate_size': 768, 'image_size': 224, 'patch_size': 14}
+16:40:27.108 | INFO    (3258534, stable_pretraining.backbone.utils) | Created ViT-tiny from scratch with config: {'hidden_size': 192, 'num_hidden_layers': 12, 'num_attention_heads': 3, 'intermediate_size': 768, 'image_size': 224, 'patch_size': 14}
+16:40:27.108 | INFO    (3258537, stable_pretraining.backbone.utils) | Created ViT-tiny from scratch with config: {'hidden_size': 192, 'num_hidden_layers': 12, 'num_attention_heads': 3, 'intermediate_size': 768, 'image_size': 224, 'patch_size': 14}
+16:40:27.157 | INFO    (3258534, stable_pretraining.data.module) | Setting up DataModule
+16:40:27.157 | INFO    (3258536, stable_pretraining.data.module) | Setting up DataModule
+16:40:27.157 | INFO    (3258531, stable_pretraining.data.module) | Setting up DataModule
+16:40:27.157 | INFO    (3258533, stable_pretraining.data.module) | Setting up DataModule
+16:40:27.157 | INFO    (3258537, stable_pretraining.data.module) | Setting up DataModule
+16:40:27.157 | INFO    (3258538, stable_pretraining.data.module) | Setting up DataModule
+16:40:27.157 | INFO    (3258532, stable_pretraining.data.module) | Setting up DataModule
+16:40:27.157 | INFO    (3258535, stable_pretraining.data.module) | Setting up DataModule
+16:40:27.175 | INFO    (3258534, stable_pretraining.module) | Initializing Module configuration...
+16:40:27.175 | INFO    (3258536, stable_pretraining.module) | Initializing Module configuration...
+16:40:27.175 | INFO    (3258538, stable_pretraining.module) | Initializing Module configuration...
+16:40:27.175 | INFO    (3258535, stable_pretraining.module) | Initializing Module configuration...
+16:40:27.175 | INFO    (3258531, stable_pretraining.module) | Initializing Module configuration...
+16:40:27.175 | WARNING (3258536, stable_pretraining.module) | No hyperparameters provided - hyperparameter logging is disabled.
+16:40:27.175 | WARNING (3258535, stable_pretraining.module) | No hyperparameters provided - hyperparameter logging is disabled.
+16:40:27.175 | WARNING (3258531, stable_pretraining.module) | No hyperparameters provided - hyperparameter logging is disabled.
+16:40:27.175 | INFO    (3258532, stable_pretraining.module) | Initializing Module configuration...
+16:40:27.175 | INFO    (3258533, stable_pretraining.module) | Initializing Module configuration...
+16:40:27.175 | INFO    (3258537, stable_pretraining.module) | Initializing Module configuration...
+16:40:27.175 | WARNING (3258538, stable_pretraining.module) | No hyperparameters provided - hyperparameter logging is disabled.
+16:40:27.175 | WARNING (3258534, stable_pretraining.module) | No hyperparameters provided - hyperparameter logging is disabled.
+16:40:27.175 | WARNING (3258533, stable_pretraining.module) | No hyperparameters provided - hyperparameter logging is disabled.
+16:40:27.175 | WARNING (3258537, stable_pretraining.module) | No hyperparameters provided - hyperparameter logging is disabled.
+16:40:27.175 | WARNING (3258532, stable_pretraining.module) | No hyperparameters provided - hyperparameter logging is disabled.
+16:40:27.175 | INFO    (3258536, stable_pretraining.module) | Setting custom forward method.
+16:40:27.175 | INFO    (3258531, stable_pretraining.module) | Setting custom forward method.
+16:40:27.175 | INFO    (3258534, stable_pretraining.module) | Setting custom forward method.
+16:40:27.175 | INFO    (3258533, stable_pretraining.module) | Setting custom forward method.
+16:40:27.175 | INFO    (3258536, stable_pretraining.module) | Setting attribute: self.model = <class 'jepa.JEPA'>
+16:40:27.176 | INFO    (3258534, stable_pretraining.module) | Setting attribute: self.model = <class 'jepa.JEPA'>
+16:40:27.176 | INFO    (3258537, stable_pretraining.module) | Setting custom forward method.
+16:40:27.176 | INFO    (3258536, stable_pretraining.module) | Setting attribute: self.sigreg = <class 'module.SIGReg'>
+16:40:27.176 | INFO    (3258533, stable_pretraining.module) | Setting attribute: self.model = <class 'jepa.JEPA'>
+16:40:27.176 | INFO    (3258534, stable_pretraining.module) | Setting attribute: self.sigreg = <class 'module.SIGReg'>
+16:40:27.176 | INFO    (3258537, stable_pretraining.module) | Setting attribute: self.model = <class 'jepa.JEPA'>
+16:40:27.176 | INFO    (3258536, stable_pretraining.module) | Setting attribute: self.optim = <class 'dict'>
+16:40:27.176 | INFO    (3258533, stable_pretraining.module) | Setting attribute: self.sigreg = <class 'module.SIGReg'>
+16:40:27.176 | INFO    (3258534, stable_pretraining.module) | Setting attribute: self.optim = <class 'dict'>
+16:40:27.176 | INFO    (3258537, stable_pretraining.module) | Setting attribute: self.sigreg = <class 'module.SIGReg'>
+16:40:27.176 | INFO    (3258536, stable_pretraining.module) | No metrics configuration provided - automatic metric tracking is disabled.
+16:40:27.176 | INFO    (3258533, stable_pretraining.module) | Setting attribute: self.optim = <class 'dict'>
+16:40:27.176 | INFO    (3258537, stable_pretraining.module) | Setting attribute: self.optim = <class 'dict'>
+16:40:27.176 | INFO    (3258534, stable_pretraining.module) | No metrics configuration provided - automatic metric tracking is disabled.
+16:40:27.176 | INFO    (3258533, stable_pretraining.module) | No metrics configuration provided - automatic metric tracking is disabled.
+16:40:27.176 | INFO    (3258535, stable_pretraining.module) | Setting custom forward method.
+16:40:27.176 | INFO    (3258532, stable_pretraining.module) | Setting custom forward method.
+16:40:27.176 | INFO    (3258537, stable_pretraining.module) | No metrics configuration provided - automatic metric tracking is disabled.
+16:40:27.176 | INFO    (3258532, stable_pretraining.module) | Setting attribute: self.model = <class 'jepa.JEPA'>
+16:40:27.176 | INFO    (3258535, stable_pretraining.module) | Setting attribute: self.model = <class 'jepa.JEPA'>
+16:40:27.176 | INFO    (3258535, stable_pretraining.module) | Setting attribute: self.sigreg = <class 'module.SIGReg'>
+16:40:27.176 | INFO    (3258532, stable_pretraining.module) | Setting attribute: self.sigreg = <class 'module.SIGReg'>
+16:40:27.176 | INFO    (3258535, stable_pretraining.module) | Setting attribute: self.optim = <class 'dict'>
+16:40:27.176 | INFO    (3258532, stable_pretraining.module) | Setting attribute: self.optim = <class 'dict'>
+16:40:27.176 | INFO    (3258535, stable_pretraining.module) | No metrics configuration provided - automatic metric tracking is disabled.
+16:40:27.176 | INFO    (3258532, stable_pretraining.module) | No metrics configuration provided - automatic metric tracking is disabled.
+16:40:27.176 | INFO    (3258538, stable_pretraining.module) | Setting custom forward method.
+16:40:27.176 | INFO    (3258531, stable_pretraining.module) | Setting attribute: self.model = <class 'jepa.JEPA'>
+16:40:27.176 | INFO    (3258531, stable_pretraining.module) | Setting attribute: self.sigreg = <class 'module.SIGReg'>
+16:40:27.176 | INFO    (3258538, stable_pretraining.module) | Setting attribute: self.model = <class 'jepa.JEPA'>
+16:40:27.176 | INFO    (3258538, stable_pretraining.module) | Setting attribute: self.sigreg = <class 'module.SIGReg'>
+16:40:27.176 | INFO    (3258531, stable_pretraining.module) | Setting attribute: self.optim = <class 'dict'>
+16:40:27.176 | INFO    (3258531, stable_pretraining.module) | No metrics configuration provided - automatic metric tracking is disabled.
+16:40:27.176 | INFO    (3258538, stable_pretraining.module) | Setting attribute: self.optim = <class 'dict'>
+16:40:27.176 | INFO    (3258538, stable_pretraining.module) | No metrics configuration provided - automatic metric tracking is disabled.
+[1;34mwandb[0m: 
+============================================
+Finished:  Mon Apr 20 04:40:30 PM EDT 2026
+============================================

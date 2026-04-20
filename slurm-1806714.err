@@ -1,0 +1,155 @@
+Error executing job with overrides: ['data=pusht', 'wandb.enabled=False']
+/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/fabric/connector.py:571: `precision=bf16` is supported for historical reasons but its usage is discouraged. Please set your precision to bf16-mixed instead!
+Error executing job with overrides: ['data=pusht', 'wandb.enabled=False']
+Error executing job with overrides: ['data=pusht', 'wandb.enabled=False']
+Error executing job with overrides: ['data=pusht', 'wandb.enabled=False']
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 163, in run
+    trainer = pl.Trainer(
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/utilities/argparse.py", line 70, in insert_env_defaults
+    return fn(self, **kwargs)
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 163, in run
+    trainer = pl.Trainer(
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/trainer.py", line 417, in __init__
+    self._accelerator_connector = _AcceleratorConnector(
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/connectors/accelerator_connector.py", line 148, in __init__
+    self.cluster_environment: ClusterEnvironment = self._choose_and_init_cluster_environment()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/utilities/argparse.py", line 70, in insert_env_defaults
+    return fn(self, **kwargs)
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/trainer.py", line 417, in __init__
+    self._accelerator_connector = _AcceleratorConnector(
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/connectors/accelerator_connector.py", line 397, in _choose_and_init_cluster_environment
+    return env_type()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/connectors/accelerator_connector.py", line 148, in __init__
+    self.cluster_environment: ClusterEnvironment = self._choose_and_init_cluster_environment()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/fabric/plugins/environments/slurm.py", line 54, in __init__
+    self._validate_srun_variables()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/connectors/accelerator_connector.py", line 397, in _choose_and_init_cluster_environment
+    return env_type()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/fabric/plugins/environments/slurm.py", line 221, in _validate_srun_variables
+    raise RuntimeError(
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/fabric/plugins/environments/slurm.py", line 54, in __init__
+    self._validate_srun_variables()
+RuntimeError: You set `--ntasks=8` in your SLURM bash script, but this variable is not supported. HINT: Use `--ntasks-per-node=8` instead.
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/fabric/plugins/environments/slurm.py", line 221, in _validate_srun_variables
+    raise RuntimeError(
+RuntimeError: You set `--ntasks=8` in your SLURM bash script, but this variable is not supported. HINT: Use `--ntasks-per-node=8` instead.
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 163, in run
+    trainer = pl.Trainer(
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/utilities/argparse.py", line 70, in insert_env_defaults
+    return fn(self, **kwargs)
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/trainer.py", line 417, in __init__
+    self._accelerator_connector = _AcceleratorConnector(
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/connectors/accelerator_connector.py", line 148, in __init__
+    self.cluster_environment: ClusterEnvironment = self._choose_and_init_cluster_environment()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/connectors/accelerator_connector.py", line 397, in _choose_and_init_cluster_environment
+    return env_type()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/fabric/plugins/environments/slurm.py", line 54, in __init__
+    self._validate_srun_variables()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/fabric/plugins/environments/slurm.py", line 221, in _validate_srun_variables
+    raise RuntimeError(
+RuntimeError: You set `--ntasks=8` in your SLURM bash script, but this variable is not supported. HINT: Use `--ntasks-per-node=8` instead.
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+Traceback (most recent call last):
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 163, in run
+    trainer = pl.Trainer(
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/utilities/argparse.py", line 70, in insert_env_defaults
+    return fn(self, **kwargs)
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/trainer.py", line 417, in __init__
+    self._accelerator_connector = _AcceleratorConnector(
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/connectors/accelerator_connector.py", line 148, in __init__
+    self.cluster_environment: ClusterEnvironment = self._choose_and_init_cluster_environment()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/connectors/accelerator_connector.py", line 397, in _choose_and_init_cluster_environment
+    return env_type()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/fabric/plugins/environments/slurm.py", line 54, in __init__
+    self._validate_srun_variables()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/fabric/plugins/environments/slurm.py", line 221, in _validate_srun_variables
+    raise RuntimeError(
+RuntimeError: You set `--ntasks=8` in your SLURM bash script, but this variable is not supported. HINT: Use `--ntasks-per-node=8` instead.
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+Error executing job with overrides: ['data=pusht', 'wandb.enabled=False']
+Error executing job with overrides: ['data=pusht', 'wandb.enabled=False']
+Error executing job with overrides: ['data=pusht', 'wandb.enabled=False']
+Traceback (most recent call last):
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 163, in run
+    trainer = pl.Trainer(
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/utilities/argparse.py", line 70, in insert_env_defaults
+    return fn(self, **kwargs)
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/trainer.py", line 417, in __init__
+    self._accelerator_connector = _AcceleratorConnector(
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/connectors/accelerator_connector.py", line 148, in __init__
+    self.cluster_environment: ClusterEnvironment = self._choose_and_init_cluster_environment()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/connectors/accelerator_connector.py", line 397, in _choose_and_init_cluster_environment
+    return env_type()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/fabric/plugins/environments/slurm.py", line 54, in __init__
+    self._validate_srun_variables()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/fabric/plugins/environments/slurm.py", line 221, in _validate_srun_variables
+    raise RuntimeError(
+RuntimeError: You set `--ntasks=8` in your SLURM bash script, but this variable is not supported. HINT: Use `--ntasks-per-node=8` instead.
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+Error executing job with overrides: ['data=pusht', 'wandb.enabled=False']
+Traceback (most recent call last):
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 163, in run
+    trainer = pl.Trainer(
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/utilities/argparse.py", line 70, in insert_env_defaults
+    return fn(self, **kwargs)
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/trainer.py", line 417, in __init__
+    self._accelerator_connector = _AcceleratorConnector(
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/connectors/accelerator_connector.py", line 148, in __init__
+    self.cluster_environment: ClusterEnvironment = self._choose_and_init_cluster_environment()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/connectors/accelerator_connector.py", line 397, in _choose_and_init_cluster_environment
+    return env_type()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/fabric/plugins/environments/slurm.py", line 54, in __init__
+    self._validate_srun_variables()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/fabric/plugins/environments/slurm.py", line 221, in _validate_srun_variables
+    raise RuntimeError(
+RuntimeError: You set `--ntasks=8` in your SLURM bash script, but this variable is not supported. HINT: Use `--ntasks-per-node=8` instead.
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+Traceback (most recent call last):
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 163, in run
+    trainer = pl.Trainer(
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/utilities/argparse.py", line 70, in insert_env_defaults
+    return fn(self, **kwargs)
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/trainer.py", line 417, in __init__
+    self._accelerator_connector = _AcceleratorConnector(
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/connectors/accelerator_connector.py", line 148, in __init__
+    self.cluster_environment: ClusterEnvironment = self._choose_and_init_cluster_environment()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/connectors/accelerator_connector.py", line 397, in _choose_and_init_cluster_environment
+    return env_type()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/fabric/plugins/environments/slurm.py", line 54, in __init__
+    self._validate_srun_variables()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/fabric/plugins/environments/slurm.py", line 221, in _validate_srun_variables
+    raise RuntimeError(
+RuntimeError: You set `--ntasks=8` in your SLURM bash script, but this variable is not supported. HINT: Use `--ntasks-per-node=8` instead.
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+Traceback (most recent call last):
+  File "/oscar/scratch/yliu674/le-wm-me/train.py", line 163, in run
+    trainer = pl.Trainer(
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/utilities/argparse.py", line 70, in insert_env_defaults
+    return fn(self, **kwargs)
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/trainer.py", line 417, in __init__
+    self._accelerator_connector = _AcceleratorConnector(
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/connectors/accelerator_connector.py", line 148, in __init__
+    self.cluster_environment: ClusterEnvironment = self._choose_and_init_cluster_environment()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/pytorch/trainer/connectors/accelerator_connector.py", line 397, in _choose_and_init_cluster_environment
+    return env_type()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/fabric/plugins/environments/slurm.py", line 54, in __init__
+    self._validate_srun_variables()
+  File "/oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/lightning/fabric/plugins/environments/slurm.py", line 221, in _validate_srun_variables
+    raise RuntimeError(
+RuntimeError: You set `--ntasks=8` in your SLURM bash script, but this variable is not supported. HINT: Use `--ntasks-per-node=8` instead.
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+srun: error: gpu3102: task 1: Exited with exit code 1
+srun: error: gpu3102: tasks 0,2-7: Exited with exit code 1
