@@ -63,6 +63,8 @@ def run(cfg: DictConfig):
         "goal": img_transform(cfg),
     }
 
+    cache_dir = Path(cfg.cache_dir or swm.data.utils.get_cache_dir())
+
     dataset = get_dataset(cfg, cfg.eval.dataset_name)
     stats_dataset = dataset  # get_dataset(cfg, cfg.dataset.stats)
     col_name = "episode_idx" if "episode_idx" in dataset.column_names else "ep_idx"
@@ -85,7 +87,7 @@ def run(cfg: DictConfig):
     policy = cfg.get("policy", "random")
 
     if policy != "random":
-        model = swm.policy.AutoCostModel(cfg.policy)
+        model = swm.policy.AutoCostModel(cfg.policy, cache_dir=cache_dir)
         model = model.to("cuda")
         model = model.eval()
         model.requires_grad_(False)
@@ -100,9 +102,7 @@ def run(cfg: DictConfig):
         policy = swm.policy.RandomPolicy()
 
     results_path = (
-        Path(swm.data.utils.get_cache_dir(), cfg.policy).parent
-        if cfg.policy != "random"
-        else Path(__file__).parent
+        Path(cache_dir, cfg.policy).parent if cfg.policy != "random" else Path(__file__).parent
     )
 
     # sample the episodes and the starting indices
