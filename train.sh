@@ -6,6 +6,7 @@
 # Usage:
 #   sbatch train.sh                 # defaults to data=pusht
 #   sbatch train.sh pusht           # same as above
+#   sbatch train.sh cube            # OGB cube (needs lewm-cube/*.h5 or STABLEWM_HOME layout below)
 #   sbatch train.sh pusht trainer.max_epochs=5 loader.batch_size=64
 #                                   # extra args are forwarded to Hydra
 #
@@ -71,16 +72,54 @@ export STABLEWM_HOME
 mkdir -p "$STABLEWM_HOME"
 echo "STABLEWM_HOME = $STABLEWM_HOME"
 
-# Sanity check: pusht dataset file must exist.
-DATA_FILE="$STABLEWM_HOME/pusht_expert_train.h5"
-if [ ! -e "$DATA_FILE" ]; then
-    echo "ERROR: missing $DATA_FILE"
-    echo "Fix by symlinking or moving it, e.g.:"
-    echo "  ln -sf /oscar/scratch/$USER/le-wm-me/lewm-pusht/pusht_expert_train.h5 \\"
-    echo "         $DATA_FILE"
-    exit 1
+# Sanity check: only pusht training needs pusht_expert_train.h5 (other data= configs
+# use their own HDF5 names; see config/train/data/*.yaml).
+if [ "$DATA" = "pusht" ]; then
+    DATA_FILE="$STABLEWM_HOME/pusht_expert_train.h5"
+    REPO_PUSHT="$SLURM_SUBMIT_DIR/lewm-pusht/pusht_expert_train.h5"
+    if [ ! -e "$DATA_FILE" ] && [ -e "$REPO_PUSHT" ]; then
+        echo "Linking pusht HDF5 from repo into STABLEWM_HOME..."
+        ln -sf "$REPO_PUSHT" "$DATA_FILE"
+    fi
+    if [ ! -e "$DATA_FILE" ]; then
+        echo "ERROR: missing $DATA_FILE"
+        echo "Fix by symlinking or moving it, e.g.:"
+        echo "  ln -sf /oscar/scratch/$USER/le-wm-me/lewm-pusht/pusht_expert_train.h5 \\"
+        echo "         $DATA_FILE"
+        exit 1
+    fi
+    echo "data: $DATA_FILE ($(du -h "$DATA_FILE" | cut -f1))"
 fi
-echo "data: $DATA_FILE ($(du -h "$DATA_FILE" | cut -f1))"
+
+# Cube / OGB: HDF5Dataset resolves name ogbench/cube_single_expert to
+#   $STABLEWM_HOME/ogbench/cube_single_expert.h5
+if [ "$DATA" = "cube" ] || [ "$DATA" = "ogb" ]; then
+    CUBE_DST="$STABLEWM_HOME/ogbench/cube_single_expert.h5"
+    mkdir -p "$STABLEWM_HOME/ogbench"
+    if [ ! -e "$CUBE_DST" ]; then
+        REPO_CUBE_DIR="$SLURM_SUBMIT_DIR/lewm-cube"
+        for rel in "ogbench/cube_single_expert.h5" "cube_single_expert.h5"; do
+            src="$REPO_CUBE_DIR/$rel"
+            if [ -e "$src" ]; then
+                abs_src="$(cd "$(dirname "$src")" && pwd)/$(basename "$src")"
+                echo "Linking cube HDF5 into STABLEWM_HOME (expected path for data=ogb)..."
+                ln -sf "$abs_src" "$CUBE_DST"
+                break
+            fi
+        done
+    fi
+    if [ ! -e "$CUBE_DST" ]; then
+        echo "ERROR: missing $CUBE_DST"
+        echo "stable-worldmodel loads dataset.name ogbench/cube_single_expert as that path."
+        echo "Unpack under your repo, e.g.:"
+        echo "  cd $SLURM_SUBMIT_DIR/lewm-cube && tar -xvf cube_single_expert.tar"
+        echo "  # or: tar --zstd -xvf cube_single_expert.tar.zst"
+        echo "Then either keep the .h5 as lewm-cube/cube_single_expert.h5 or lewm-cube/ogbench/cube_single_expert.h5"
+        echo "and re-submit, or symlink manually to $CUBE_DST"
+        exit 1
+    fi
+    echo "data: $CUBE_DST ($(du -h "$CUBE_DST" | cut -f1))"
+fi
 
 # DataLoader stability.
 export OMP_NUM_THREADS=1
