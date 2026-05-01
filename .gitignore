@@ -1,1 +1,27 @@
+# dataset
 /lewm-pusht
+/lewm-cube
+
+# claude
+__pycache__/
+environment*.json
+lightning_logs/
+outputs/
+requirements*.txt
+CLAUDE.md
+claude_outputs/
+tasks/
+
+# checkpoints
+*.ckpt
+*.pth
+*.pt
+
+# outputs
+lewm/
+outputs/
+wandb/
+
+# logs
+slurm-*.out
+slurm-*.err

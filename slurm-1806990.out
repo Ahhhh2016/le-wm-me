@@ -1,0 +1,50 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 1806990
+##  Job Name : lewm_train
+##  Nodelist : gpu3101
+##      CPUs : 1
+##  Mem/Node : 65536 MB
+## Directory : /oscar/scratch/yliu674/le-wm-me
+##   Job Started : Mon Apr 20 04:48:57 PM EDT 2026
+###############################################################################
+============================================
+Job ID:    1806990
+Data:      pusht
+Extra:     
+Node:      gpu3101.oscar.ccv.brown.edu
+Started:   Mon Apr 20 04:48:57 PM EDT 2026
+GPU:       NVIDIA L40S
+============================================
+python: /oscar/scratch/yliu674/.venv/bin/python  (Python 3.10.20)
+sys.executable = /oscar/scratch/yliu674/.venv/bin/python
+datasets 4.8.4 at /oscar/scratch/yliu674/.venv/lib/python3.10/site-packages/datasets
+datasets.config OK
+stable_pretraining OK, torch 2.11.0+cu130 cuda True
+STABLEWM_HOME = /users/yliu674/scratch/le-wm-me/lewm-pusht
+data: /users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5 (44G)
+WANDB_MODE = online
+[2026-04-20 16:49:57,919][root][INFO] - Cached 'action' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:50:01,730][root][INFO] - Cached 'proprio' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+[2026-04-20 16:50:05,586][root][INFO] - Cached 'state' from '/users/yliu674/scratch/le-wm-me/lewm-pusht/pusht_expert_train.h5'
+16:50:06.327 | INFO    (4066079, stable_pretraining.backbone.utils) | Created ViT-tiny from scratch with config: {'hidden_size': 192, 'num_hidden_layers': 12, 'num_attention_heads': 3, 'intermediate_size': 768, 'image_size': 224, 'patch_size': 14}
+16:50:06.376 | INFO    (4066079, stable_pretraining.data.module) | Setting up DataModule
+16:50:06.397 | INFO    (4066079, stable_pretraining.module) | Initializing Module configuration...
+16:50:06.397 | WARNING (4066079, stable_pretraining.module) | No hyperparameters provided - hyperparameter logging is disabled.
+16:50:06.398 | INFO    (4066079, stable_pretraining.module) | Setting custom forward method.
+16:50:06.398 | INFO    (4066079, stable_pretraining.module) | Setting attribute: self.model = <class 'jepa.JEPA'>
+16:50:06.398 | INFO    (4066079, stable_pretraining.module) | Setting attribute: self.sigreg = <class 'module.SIGReg'>
+16:50:06.398 | INFO    (4066079, stable_pretraining.module) | Setting attribute: self.optim = <class 'dict'>
+16:50:06.398 | INFO    (4066079, stable_pretraining.module) | No metrics configuration provided - automatic metric tracking is disabled.
+16:50:09.465 | INFO    (4066079, stable_pretraining.callbacks.env_info) | EnvironmentDumpCallback initialized (filename=environment.json, async=True)
+16:50:09.465 | INFO    (4066079, stable_pretraining.callbacks.cpu_offload) | ============================================================
+16:50:09.466 | INFO    (4066079, stable_pretraining.callbacks.cpu_offload) | Initializing CPUOffloadCallback
+16:50:09.466 | INFO    (4066079, stable_pretraining.callbacks.cpu_offload) | Configuration:
+16:50:09.466 | INFO    (4066079, stable_pretraining.callbacks.cpu_offload) |   - Offload keys: ['state_dict', 'optimizer_states', 'lr_schedulers']
+16:50:09.466 | INFO    (4066079, stable_pretraining.callbacks.cpu_offload) |   - Log all skipped objects: False
+16:50:09.466 | INFO    (4066079, stable_pretraining.callbacks.cpu_offload) |   - Will show first/last 10 skipped objects only
+16:50:09.466 | SUCCESS (4066079, stable_pretraining.callbacks.cpu_offload) | ✓ CUDA available: 1 GPU(s) detected
+[1;34mwandb[0m: 
+[1;34mwandb[0m: 🚀 View run [33mlewm[0m at: [34mhttps://wandb.ai/yixuan_liu1-brown-university/lewm/runs/5id9tixk[0m
+============================================
+Finished:  Mon Apr 20 04:50:11 PM EDT 2026
+============================================

@@ -1,0 +1,55 @@
+{
+  "timestamp": "2026-04-20T17:22:26.648670",
+  "python": {
+    "version": "3.10.20 (main, Mar 10 2026, 18:16:33) [Clang 21.1.4 ]",
+    "version_info": {
+      "major": 3,
+      "minor": 10,
+      "micro": 20
+    },
+    "executable": "/oscar/scratch/yliu674/.venv/bin/python",
+    "prefix": "/oscar/scratch/yliu674/.venv"
+  },
+  "system": {
+    "platform": "Linux-5.14.0-570.62.1.0.1.el9_6.x86_64-x86_64-with-glibc2.34",
+    "system": "Linux",
+    "release": "5.14.0-570.62.1.0.1.el9_6.x86_64",
+    "machine": "x86_64",
+    "processor": "x86_64",
+    "hostname": "gpu3106.oscar.ccv.brown.edu"
+  },
+  "packages": {
+    "pip_freeze": "Error getting pip freeze: Command '['/oscar/scratch/yliu674/.venv/bin/python', '-m', 'pip', 'freeze']' returned non-zero exit status 1.",
+    "key_packages": {},
+    "total_packages": 0
+  },
+  "cuda": {
+    "nvidia_smi_output": "NVIDIA L40S, 575.57.08, 46068 MiB",
+    "driver_version": "575.57.08"
+  },
+  "git": {
+    "commit_hash": "16da5dbb5ad40902c517c9084f9035b4d9b25046",
+    "branch": "main",
+    "has_uncommitted_changes": true,
+    "uncommitted_changes": "M wandb/debug-internal.log\n M wandb/debug.log\n M wandb/latest-run\n?? environment.json\n?? environment_v1.json\n?? lewm/\n?? outputs/2026-04-20/16-49-53/\n?? outputs/2026-04-20/17-12-07/\n?? outputs/2026-04-20/17-19-39/\n?? outputs/2026-04-20/17-22-12/\n?? requirements_frozen.txt\n?? requirements_frozen_v1.txt\n?? slurm-1806990.err\n?? slurm-1806990.out\n?? slurm-1807533.err\n?? slurm-1807533.out\n?? wandb/run-20260420_165006-5id9tixk/\n?? wandb/run-20260420_171220-d8ci7ktu/\n?? wandb/run-20260420_171952-do9s54tg/\n?? wandb/run-20260420_172224-5zi5xyfh/",
+    "remote_url": "git@github.com:Ahhhh2016/le-wm-me.git"
+  },
+  "slurm": {
+    "SLURM_JOB_ID": "1807533",
+    "SLURM_JOB_NAME": "lewm_train",
+    "SLURM_JOB_PARTITION": "gpu",
+    "SLURM_JOB_NODELIST": "gpu3106",
+    "SLURM_JOB_NUM_NODES": "1",
+    "SLURM_NTASKS": "1",
+    "SLURM_CPUS_PER_TASK": "8",
+    "SLURM_MEM_PER_NODE": "65536",
+    "SLURM_SUBMIT_DIR": "/oscar/scratch/yliu674/le-wm-me",
+    "SLURM_CLUSTER_NAME": "slurmctld"
+  },
+  "environment_variables": {
+    "CUDA_VISIBLE_DEVICES": "0",
+    "OMP_NUM_THREADS": "1",
+    "PATH": "/oscar/scratch/yliu674/.venv/bin:/oscar/scratch/yliu674/.venv/bin:/users/yliu674/.local/bin:/oscar/runtime/software/external/miniconda3/23.11.0/bin:/oscar/runtime/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/oscar/runtime/bin:/users/yliu674/bin",
+    "CUDA_MODULE_LOADING": "LAZY"
+  }
+}
