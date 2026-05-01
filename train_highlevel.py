@@ -22,6 +22,7 @@ import stable_pretraining as spt
 import stable_worldmodel as swm
 import torch
 from lightning.pytorch.loggers import WandbLogger
+from lightning.pytorch.utilities.rank_zero import rank_zero_info
 from omegaconf import OmegaConf, open_dict
 
 from data import WaypointSubtrajectoryDataset
@@ -125,6 +126,22 @@ def hwm_forward(self, batch, stage, cfg):
         if k in ('loss', 'L_tf', 'macro_norm', 'macro_std_mean')
     }
     self.log_dict(log_dict, on_step=True, sync_dist=True)
+
+    l_raw_abs_max = l_raw.detach().float().abs().max()
+    self.log(
+        f'{stage}/debug_l_raw_abs_max',
+        l_raw_abs_max,
+        on_step=True,
+        sync_dist=True,
+    )
+    if stage == 'fit' and self.global_step % 200 == 0:
+        rank_zero_info(
+            f'[hwm] step={self.global_step} epoch={self.current_epoch} '
+            f'loss={L_tf.detach().float().item():.4f} '
+            f'macro_norm={output["macro_norm"].detach().float().item():.6f} '
+            f'macro_std_mean={output["macro_std_mean"].detach().float().item():.6f} '
+            f'l_raw_abs_max={l_raw_abs_max.item():.6f}'
+        )
     return output
 
 
