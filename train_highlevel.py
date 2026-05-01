@@ -50,10 +50,38 @@ def _build_action_norm(dataset):
     return norm_fn
 
 
+def _predict_high_level(model: HighLevelWorldModel, z_history: torch.Tensor, l: torch.Tensor):
+    """Teacher-forced one-step prediction: z_history (G,L,D), l (G,L,d_l) -> (G,D)."""
+    macro_emb = model.macro_embedder(l.float())
+    return model.predict(z_history.float(), macro_emb)[:, -1]
+
+
+def _macro_ablation_l1(
+    model: HighLevelWorldModel,
+    z_history: torch.Tensor,
+    l_real: torch.Tensor,
+    z_target: torch.Tensor,
+):
+    """L1 mean to z_target under real vs random vs zero macro latents (eval, no grad)."""
+    z_t = z_target.float()
+    with torch.no_grad():
+        z_pr = _predict_high_level(model, z_history, l_real)
+        loss_real = (z_pr - z_t).abs().mean().item()
+        l_random = torch.randn_like(l_real)
+        z_pr = _predict_high_level(model, z_history, l_random)
+        loss_rand = (z_pr - z_t).abs().mean().item()
+        l_zero = torch.zeros_like(l_real)
+        z_pr = _predict_high_level(model, z_history, l_zero)
+        loss_zero = (z_pr - z_t).abs().mean().item()
+    return loss_real, loss_rand, loss_zero
+
+
 def hwm_forward(self, batch, stage, cfg):
     """Per-batch forward for high-level training.
 
     HWM paper Eq. 1: L_tf = (1/N) sum_k |z_hat_{t_{k+1}} - z_{t_{k+1}}|_1.
+    Adds a VICReg-style variance term on raw macro latents l_raw (std over
+    batch, dim=0) so dimensions stay active. loss = L_tf + var_weight * L_var.
     Implemented via prefix-length sliding-window sampling so the predictor
     sees every context length L in {1, ..., HS} during training and the
     inference rollout's first HS-1 steps are not OOD (architecture §5.2).
@@ -111,23 +139,55 @@ def hwm_forward(self, batch, stage, cfg):
     # Argmin is unchanged; CEM cost adapters keep the sum form for ranking.
     L_tf = (pred_all - tgt_all.detach()).abs().mean()
 
+    # VICReg-style variance term: encourage per-dimension std (across batch)
+    # of raw macro latents to stay above 1 on average.
+    L_var = torch.relu(1.0 - l_raw.std(dim=0)).mean()
+    var_w = cfg.loss.get('var_weight', 0.1)
+    total_loss = L_tf + var_w * L_var
+
     # 4. EMA update for the macro-action prior buffers (used at planning
     #    time by HierarchicalCEMSolver to seed CEM and weight the prior
     #    penalty -- see planner.HighLevelCostAdapter.get_cost).
-    self.model.update_macro_prior(l_raw, momentum=cfg.macro_prior.ema_momentum)
+    #    Train only: val batches (often smaller / different) should not move
+    #    macro_mean / macro_std.
+    if stage == 'fit':
+        self.model.update_macro_prior(l_raw, momentum=cfg.macro_prior.ema_momentum)
 
     output['L_tf'] = L_tf
-    output['loss'] = L_tf
-    output['macro_norm'] = l_raw.norm(dim=-1).mean()
-    output['macro_std_mean'] = self.model.macro_std.mean()
+    output['L_var'] = L_var
+    output['loss'] = total_loss
+    # Float32 metrics for logging: bf16 scalars can round to 0.0 in TB/WandB.
+    l_raw_f = l_raw.detach().float()
+    output['macro_norm'] = l_raw_f.norm(dim=-1).mean()
+    output['macro_std_mean'] = self.model.macro_std.detach().float().mean()
+    output['macro_min'] = l_raw_f.min()
+    output['macro_max'] = l_raw_f.max()
+    # Std along batch dim, then mean over (segment, d_l) — same reduction as l_raw.std(0).mean().
+    output['macro_per_dim_std'] = l_raw_f.std(dim=0).mean()
+    blk0 = self.model.predictor.transformer.layers[0]
+    if blk0.last_gate_msa is not None:
+        output['gate_mean'] = blk0.last_gate_msa.abs().mean().float()
+    else:
+        output['gate_mean'] = torch.zeros((), device=l_raw.device, dtype=torch.float32)
 
     log_dict = {
-        f'{stage}/{k}': v.detach() for k, v in output.items()
-        if k in ('loss', 'L_tf', 'macro_norm', 'macro_std_mean')
+        f'{stage}/{k}': v.detach().float()
+        for k, v in output.items()
+        if k in (
+            'loss',
+            'L_tf',
+            'L_var',
+            'macro_norm',
+            'macro_std_mean',
+            'macro_min',
+            'macro_max',
+            'macro_per_dim_std',
+            'gate_mean',
+        )
     }
     self.log_dict(log_dict, on_step=True, sync_dist=True)
 
-    l_raw_abs_max = l_raw.detach().float().abs().max()
+    l_raw_abs_max = l_raw_f.abs().max()
     self.log(
         f'{stage}/debug_l_raw_abs_max',
         l_raw_abs_max,
@@ -137,7 +197,8 @@ def hwm_forward(self, batch, stage, cfg):
     if stage == 'fit' and self.global_step % 200 == 0:
         rank_zero_info(
             f'[hwm] step={self.global_step} epoch={self.current_epoch} '
-            f'loss={L_tf.detach().float().item():.4f} '
+            f'loss={total_loss.detach().float().item():.4f} L_tf={L_tf.detach().float().item():.4f} '
+            f'L_var={L_var.detach().float().item():.4f} '
             f'macro_norm={output["macro_norm"].detach().float().item():.6f} '
             f'macro_std_mean={output["macro_std_mean"].detach().float().item():.6f} '
             f'l_raw_abs_max={l_raw_abs_max.item():.6f}'

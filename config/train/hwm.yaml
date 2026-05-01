@@ -83,3 +83,4 @@ loss:
   distance: l1
   teacher_force_weight: 1.0
   rollout_weight: 0.0     # Push-T default per HWM Tab. 7
+  var_weight: 0.1         # VICReg-style macro latent variance (per-dim std across batch)
