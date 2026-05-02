@@ -312,6 +312,9 @@ class MacroActionEncoder(nn.Module):
     a_{t_k:t_{k+1}} primitive-action blocks into a single latent macro-action
     via a transformer with a learnable CLS token + MLP head.
 
+    The final linear uses small Gaussian init (not all-zero) so paired with the
+    high-level AdaLN-zero predictor, gradients reach this encoder from step 0.
+
     We do NOT reuse module.Block because Block.attn has no key-padding mask
     and our chunks are right-padded to a fixed L_max. Inlining a 2-layer
     masked self-attention stack keeps module.Block unchanged.
@@ -368,9 +371,10 @@ class MacroActionEncoder(nn.Module):
             nn.SiLU(),
             nn.Linear(mlp_head_dim, d_l),
         )
-        # Zero-init head's last layer so initial macro-actions start near zero
-        # (mirrors AdaLN-zero pattern in ConditionalBlock).
-        nn.init.zeros_(self.head[-1].weight)
+        # Small random init on the last linear (not all-zeros). All-zero l with
+        # zero macro_embedder bias left the high-level predictor's AdaLN branch
+        # at a no-gradient fixed point, so A_psi never learned (macro_norm=0).
+        nn.init.normal_(self.head[-1].weight, std=0.02)
         nn.init.zeros_(self.head[-1].bias)
 
     def _attend(self, x, key_pad_mask, layer_idx):

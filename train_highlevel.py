@@ -234,7 +234,9 @@ def run(cfg):
 
     macro_embedder = torch.nn.Linear(cfg.wm.d_l, embed_dim)
     torch.nn.init.normal_(macro_embedder.weight, std=0.02)
-    torch.nn.init.zeros_(macro_embedder.bias)
+    # Tiny bias so macro_emb is not exactly 0 when l≈0, helping gradients into
+    # the predictor's AdaLN at step 0 (pairs with MacroActionEncoder head init).
+    torch.nn.init.normal_(macro_embedder.bias, std=0.01)
 
     predictor = ARPredictor(
         num_frames=cfg.wm.history_size,
