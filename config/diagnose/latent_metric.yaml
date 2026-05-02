@@ -1,3 +1,4 @@
+# @package _global_
 # Leading "/" resolves from config root; nested under diagnose/ otherwise becomes diagnose/train/lewm
 defaults:
   - /train/lewm
