@@ -33,20 +33,30 @@ from jepa import JEPA
 from utils import get_column_normalizer, get_img_preprocessor
 
 
+def _train_namespace(cfg: DictConfig) -> DictConfig:
+    """`/train/lewm` often merges under cfg.train; plain train.py uses cfg root."""
+    tr = OmegaConf.select(cfg, "train")
+    if tr is not None and OmegaConf.is_config(tr) and "wm" in tr:
+        return tr
+    if "wm" in cfg:
+        return cfg
+    raise RuntimeError(
+        "Could not find wm (cfg.wm or cfg.train.wm). Include Hydra default /train/lewm."
+    )
+
+
 def _build_dataset(cfg: DictConfig):
-    # pusht.yaml sets num_steps via ${wm.num_preds}; under diagnose composition that
-    # interpolation often fails to resolve. Match train.py semantics explicitly.
-    if "wm" not in cfg:
-        raise RuntimeError("cfg.wm missing; defaults must include /train/lewm.")
+    tc = _train_namespace(cfg)
+    # pusht.yaml uses ${wm.num_preds} for num_steps; composition often breaks interpolation.
     if "data" not in cfg or "dataset" not in cfg.data:
         raise RuntimeError("cfg.data.dataset missing; check diagnose Hydra defaults.")
 
     with open_dict(cfg.data.dataset):
-        cfg.data.dataset.num_steps = int(cfg.wm.num_preds) + int(cfg.wm.history_size)
+        cfg.data.dataset.num_steps = int(tc.wm.num_preds) + int(tc.wm.history_size)
 
     dataset = swm.data.HDF5Dataset(**cfg.data.dataset, transform=None)
     transforms = [
-        get_img_preprocessor(source="pixels", target="pixels", img_size=cfg.img_size)
+        get_img_preprocessor(source="pixels", target="pixels", img_size=tc.img_size)
     ]
 
     with open_dict(cfg):
