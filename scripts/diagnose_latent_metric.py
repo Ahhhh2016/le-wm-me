@@ -141,6 +141,8 @@ def _spearman(x: np.ndarray, y: np.ndarray) -> float:
 
 @hydra.main(version_base=None, config_path="../config", config_name="diagnose/latent_metric")
 def main(cfg: DictConfig):
+    OmegaConf.set_struct(cfg, False)
+
     ckpt = Path(cfg.ckpt_path).expanduser().resolve()
     if not ckpt.is_file():
         raise FileNotFoundError(f"Checkpoint not found: {ckpt}")

@@ -1,7 +1,10 @@
 # @package _global_
-# Leading "/" resolves from config root; nested under diagnose/ otherwise becomes diagnose/train/lewm
+# Leading "/" resolves from config root.
+# Explicit @data: nested `data: pusht` inside /train/lewm may not merge at cfg.data under @package _global_.
+# Order: /train/lewm before data/pusht so ${wm.*} interpolations in pusht.yaml resolve.
 defaults:
   - /train/lewm
+  - /train/data/pusht@data
   - _self_
 
 # Disable training-side logging for this entrypoint
