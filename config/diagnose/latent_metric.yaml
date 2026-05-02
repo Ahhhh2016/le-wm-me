@@ -1,0 +1,15 @@
+defaults:
+  - train/lewm
+  - _self_
+
+# Disable training-side logging for this entrypoint
+wandb:
+  enabled: false
+
+# Path to saved JEPA (`*_object.ckpt` from ModelObjectCallBack, full torch.save)
+ckpt_path: ???
+
+num_pairs: 5000
+batch_size: 32
+state_key: state
+seed: 42
