@@ -1,5 +1,6 @@
+# Leading "/" resolves from config root; nested under diagnose/ otherwise becomes diagnose/train/lewm
 defaults:
-  - train/lewm
+  - /train/lewm
   - _self_
 
 # Disable training-side logging for this entrypoint
