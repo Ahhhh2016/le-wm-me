@@ -93,11 +93,23 @@ def run(cfg: DictConfig):
         is_hierarchical = "Hierarchical" in str(cfg.solver._target_)
 
         if is_hierarchical:
-            model_low = swm.policy.AutoCostModel(cfg.policy).to("cuda").eval()
+            low_root = cfg.get("policy_cache_dir")
+            if low_root is None:
+                low_root = cfg.cache_dir
+            high_root = cfg.get("policy_high_cache_dir")
+            if high_root is None:
+                high_root = cfg.cache_dir
+
+            def _load_cost_model(name, root):
+                if root:
+                    return swm.policy.AutoCostModel(name, cache_dir=str(Path(root)))
+                return swm.policy.AutoCostModel(name)
+
+            model_low = _load_cost_model(cfg.policy, low_root).to("cuda").eval()
             model_low.requires_grad_(False)
             model_low.interpolate_pos_encoding = True
 
-            model_high = swm.policy.AutoCostModel(cfg.policy_high).to("cuda").eval()
+            model_high = _load_cost_model(cfg.policy_high, high_root).to("cuda").eval()
             model_high.requires_grad_(False)
             model_high.interpolate_pos_encoding = True
 
@@ -114,7 +126,13 @@ def run(cfg: DictConfig):
                 cfg.solver, model_low=model_low, model_high=model_high
             )
         else:
-            model = swm.policy.AutoCostModel(cfg.policy)
+            single_root = cfg.cache_dir
+            if single_root:
+                model = swm.policy.AutoCostModel(
+                    cfg.policy, cache_dir=str(Path(single_root))
+                )
+            else:
+                model = swm.policy.AutoCostModel(cfg.policy)
             model = model.to("cuda")
             model = model.eval()
             model.requires_grad_(False)

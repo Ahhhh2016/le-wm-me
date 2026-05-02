@@ -1,6 +1,9 @@
 # Hierarchical eval on Push-T. Sibling of pusht.yaml. Inherits its world /
 # dataset / eval blocks; overrides the solver to the hierarchical one and
 # adds a second checkpoint key (policy_high).
+#
+# Naming: macro latent dimension d_l (HWM Tab. 10) is NOT goal_offset_steps.
+# d_l is read from the high checkpoint (model_high.d_l) unless you set solver.d_l.
 
 defaults:
   - launcher: local
@@ -27,6 +30,9 @@ seed: 42
 # into the HierarchicalCEMSolver as model_low / model_high.
 policy: random              # set to a JEPA ckpt name to enable hierarchy
 policy_high: ???            # required when policy != 'random'
+# Optional roots for AutoCostModel (default: cache_dir for both). Use when low/high ckpts differ.
+policy_cache_dir: null
+policy_high_cache_dir: null
 
 plan_config:                # passed to WorldModelPolicy -> solver.configure as `config`
   horizon: 5                # low-level pred horizon (LeWM blocks)
@@ -35,7 +41,9 @@ plan_config:                # passed to WorldModelPolicy -> solver.configure as 
 
 eval:
   num_eval: 50
-  goal_offset_steps: 25     # vary in {25, 50, 75} for the long-horizon sweep
+  # Env-step gap start→goal (NOT macro latent dim d_l). Sweep {25,50,75} for long-horizon;
+  # use 50 here if you want the same “50-step” goal distance as a baseline run.
+  goal_offset_steps: 25
   eval_budget: 50
   img_size: 224
   dataset_name: pusht_expert_train
