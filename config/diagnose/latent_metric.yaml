@@ -13,3 +13,9 @@ num_pairs: 5000
 batch_size: 32
 state_key: state
 seed: 42
+
+# cuda | cpu | auto  (auto = cuda if available else cpu)
+device: cuda
+cuda_device: 0
+# Match train.py trainer precision on GPU (faster inference)
+use_bf16: true

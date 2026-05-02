@@ -8,10 +8,13 @@ Pearson / Spearman correlation between latent distance and state distance.
 Example:
   python scripts/diagnose_latent_metric.py \\
     ckpt_path=/path/to/lewm_epoch_15_object.ckpt
+
+Uses GPU by default (see config diagnose.device). Override with device=cpu if needed.
 """
 
 from __future__ import annotations
 
+import contextlib
 import sys
 from pathlib import Path
 
@@ -54,6 +57,7 @@ def _encode_unique_rows(
     state_key: str,
     batch_size: int,
     device: torch.device,
+    use_bf16: bool,
 ) -> tuple[torch.Tensor, np.ndarray]:
     """Latents z (N, D) and states s (N, state_dim) from last timestep; matches training transforms."""
     zs = []
@@ -83,8 +87,14 @@ def _encode_unique_rows(
                     states.append(st_a[-1] if st_a.ndim > 1 else st_a)
 
             pixels = torch.stack(batch_pixels, dim=0).unsqueeze(1).float().to(device)
-            out = model.encode({"pixels": pixels})
-            emb = out["emb"][:, -1, :]
+            autocast_ctx = (
+                torch.autocast(device_type="cuda", dtype=torch.bfloat16)
+                if device.type == "cuda" and use_bf16
+                else contextlib.nullcontext()
+            )
+            with autocast_ctx:
+                out = model.encode({"pixels": pixels})
+            emb = out["emb"][:, -1, :].float()
             zs.append(emb.cpu())
 
     z_cat = torch.cat(zs, dim=0)
@@ -99,6 +109,22 @@ def _pearson(x: np.ndarray, y: np.ndarray) -> float:
     if denom <= 0:
         return float("nan")
     return float((x * y).sum() / denom)
+
+
+def _resolve_device(cfg: DictConfig) -> torch.device:
+    mode = str(cfg.get("device", "cuda")).lower()
+    if mode == "auto":
+        return torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if mode == "cuda":
+        if not torch.cuda.is_available():
+            raise RuntimeError(
+                "device=cuda but CUDA is not available. Use device=cpu or install a CUDA build of PyTorch."
+            )
+        idx = int(cfg.get("cuda_device", 0))
+        return torch.device(f"cuda:{idx}")
+    if mode == "cpu":
+        return torch.device("cpu")
+    raise ValueError(f"Unknown device={mode!r}; use cuda, cpu, or auto.")
 
 
 def _spearman(x: np.ndarray, y: np.ndarray) -> float:
@@ -119,7 +145,15 @@ def main(cfg: DictConfig):
     if not ckpt.is_file():
         raise FileNotFoundError(f"Checkpoint not found: {ckpt}")
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = _resolve_device(cfg)
+    if device.type == "cuda":
+        torch.cuda.set_device(device)
+        print(f"Using GPU: {torch.cuda.get_device_name(device)}")
+    else:
+        print(f"Using device: {device}")
+
+    use_bf16 = bool(cfg.get("use_bf16", True)) and device.type == "cuda"
+
     rng = np.random.default_rng(cfg.seed)
 
     dataset = _build_dataset(cfg)
@@ -146,7 +180,9 @@ def main(cfg: DictConfig):
     model = model.to(device)
 
     print(
-        f"Encoding {len(unique_idx)} unique rows (batch_size={cfg.batch_size}, device={device}) …"
+        f"Encoding {len(unique_idx)} unique rows "
+        f"(batch_size={cfg.batch_size}, device={device}"
+        f"{', bf16' if use_bf16 else ''}) …"
     )
     z_unique, s_unique = _encode_unique_rows(
         model,
@@ -155,6 +191,7 @@ def main(cfg: DictConfig):
         state_key=state_key,
         batch_size=int(cfg.batch_size),
         device=device,
+        use_bf16=use_bf16,
     )
     z_a = z_unique[inv_a]
     z_b = z_unique[inv_b]
