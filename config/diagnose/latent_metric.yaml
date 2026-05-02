@@ -14,6 +14,9 @@ wandb:
 # Path to saved JEPA (`*_object.ckpt` from ModelObjectCallBack, full torch.save)
 ckpt_path: ???
 
+# Directory containing pusht_expert_train.h5 (same as eval.py cache_dir). Default: ~/.stable_worldmodel
+cache_dir: null
+
 num_pairs: 5000
 batch_size: 32
 state_key: state

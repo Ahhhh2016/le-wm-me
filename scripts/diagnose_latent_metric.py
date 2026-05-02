@@ -7,7 +7,8 @@ Pearson / Spearman correlation between latent distance and state distance.
 
 Example:
   python scripts/diagnose_latent_metric.py \\
-    ckpt_path=/path/to/lewm_epoch_15_object.ckpt
+    ckpt_path=/path/to/lewm_epoch_15_object.ckpt \\
+    cache_dir=/path/to/dir/with/pusht_expert_train.h5
 
 Uses GPU by default (see config diagnose.device). Override with device=cpu if needed.
 """
@@ -53,6 +54,9 @@ def _build_dataset(cfg: DictConfig):
 
     with open_dict(cfg.data.dataset):
         cfg.data.dataset.num_steps = int(tc.wm.num_preds) + int(tc.wm.history_size)
+        cdir = OmegaConf.select(cfg, "cache_dir")
+        if cdir not in (None, ""):
+            cfg.data.dataset.cache_dir = str(Path(str(cdir)).expanduser().resolve())
 
     dataset = swm.data.HDF5Dataset(**cfg.data.dataset, transform=None)
     transforms = [
