@@ -34,6 +34,16 @@ from utils import get_column_normalizer, get_img_preprocessor
 
 
 def _build_dataset(cfg: DictConfig):
+    # pusht.yaml sets num_steps via ${wm.num_preds}; under diagnose composition that
+    # interpolation often fails to resolve. Match train.py semantics explicitly.
+    if "wm" not in cfg:
+        raise RuntimeError("cfg.wm missing; defaults must include /train/lewm.")
+    if "data" not in cfg or "dataset" not in cfg.data:
+        raise RuntimeError("cfg.data.dataset missing; check diagnose Hydra defaults.")
+
+    with open_dict(cfg.data.dataset):
+        cfg.data.dataset.num_steps = int(cfg.wm.num_preds) + int(cfg.wm.history_size)
+
     dataset = swm.data.HDF5Dataset(**cfg.data.dataset, transform=None)
     transforms = [
         get_img_preprocessor(source="pixels", target="pixels", img_size=cfg.img_size)
