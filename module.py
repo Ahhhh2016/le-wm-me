@@ -285,6 +285,26 @@ class ARPredictor(nn.Module):
         return x
 
 
+class LatentMatchingProjection(nn.Module):
+    """Project frozen JEPA embeddings into a low-dimensional task subspace.
+
+    Used by HWM so teacher forcing and hierarchical CEM costs compare
+    predictions and targets in this space (see `hwm.HighLevelWorldModel`).
+    """
+
+    def __init__(self, embed_dim: int, out_dim: int):
+        super().__init__()
+        self.embed_dim = int(embed_dim)
+        self.out_dim = int(out_dim)
+        self.norm = nn.LayerNorm(self.embed_dim)
+        self.lin = nn.Linear(self.embed_dim, self.out_dim)
+        nn.init.normal_(self.lin.weight, std=0.02)
+        nn.init.zeros_(self.lin.bias)
+
+    def forward(self, z: torch.Tensor) -> torch.Tensor:
+        return self.lin(self.norm(z))
+
+
 class MacroActionEncoder(nn.Module):
     """A_psi: variable-length action chunk -> macro-action latent l in R^{d_l}.
 

@@ -1,9 +1,11 @@
 """High-level world model training entry point.
 
-HWM paper Sec. 3.1, Eq. 1 -- teacher-forced L1 on next-waypoint latent. The
+HWM paper Sec. 3.1, Eq. 1 -- teacher-forced L1 on next-waypoint latent in the
+optional matching projection of the frozen encoder's embeddings. The
 encoder is shared with the (already trained) low-level JEPA and frozen here;
 we only optimise the macro-action encoder, the macro embedder, the new
-ARPredictor, and a fresh pred_proj (architecture proposal §5.1).
+ARPredictor, a fresh pred_proj (unless share_pred_proj), and matching_head
+when ``wm.matching_dim`` is set.
 
 Sliding-window training over prefix lengths L in {1, ..., HS} (architecture
 proposal §5.2 step 4). At inference the high-level rollout begins with a
@@ -27,7 +29,7 @@ from omegaconf import OmegaConf, open_dict
 
 from data import WaypointSubtrajectoryDataset
 from hwm import HighLevelWorldModel
-from module import ARPredictor, MLP, MacroActionEncoder
+from module import ARPredictor, LatentMatchingProjection, MLP, MacroActionEncoder
 from utils import get_img_preprocessor, ModelObjectCallBack
 
 
@@ -106,10 +108,17 @@ def hwm_forward(self, batch, stage, cfg):
 
     pred_all = torch.cat(pred_chunks, dim=0)
     tgt_all = torch.cat(tgt_chunks, dim=0)
-    # HWM Eq. 1 is the L1 norm summed over D; we mean over D as well so the
+     # HWM Eq. 1 is the L1 norm summed over D; we mean over D as well so the
     # loss magnitude (~1) matches LeWM's MSE under shared lr/grad-clip.
     # Argmin is unchanged; CEM cost adapters keep the sum form for ranking.
-    L_tf = (pred_all - tgt_all.detach()).abs().mean()
+    # L_tf = (pred_all - tgt_all.detach()).abs().mean()
+    
+    # L1 in matching space (full embed_dim if matching_head is Identity).
+    # Mean keeps loss scale (~1) comparable to LeWM; CEM uses sum over dims.
+    L_tf = (
+        self.model.project_for_matching(pred_all)
+        - self.model.project_for_matching(tgt_all.detach())
+    ).abs().mean()
 
     # 4. EMA update for the macro-action prior buffers (used at planning
     #    time by HierarchicalCEMSolver to seed CEM and weight the prior
@@ -252,6 +261,12 @@ def run(cfg):
         pred_proj = low_level.pred_proj
         pred_proj.requires_grad_(False).eval()
 
+    mdim = cfg.wm.get('matching_dim', None)
+    if mdim is None:
+        matching_head = None  # HighLevelWorldModel defaults to nn.Identity()
+    else:
+        matching_head = LatentMatchingProjection(embed_dim, int(mdim))
+
     world_model = HighLevelWorldModel(
         encoder=encoder,
         projector=projector,
@@ -261,6 +276,7 @@ def run(cfg):
         pred_proj=pred_proj,
         d_l=cfg.wm.d_l,
         history_size=cfg.wm.history_size,
+        matching_head=matching_head,
     )
 
     # Optimiser only sees trainable parameters; encoder/projector are frozen.

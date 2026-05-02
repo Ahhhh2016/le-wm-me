@@ -25,6 +25,29 @@ import stable_worldmodel as swm
 from stable_worldmodel.solver import CEMSolver
 
 
+def matching_l1_from_chain(
+    pred: torch.Tensor, goal: torch.Tensor, high_model: nn.Module | None
+) -> torch.Tensor:
+    """L1 distance in HWM matching space, or raw latent L1 if no head / no model.
+
+    Walks `.model` chains (e.g. stable_pretraining wrappers) to find
+    `matching_l1` on the underlying `HighLevelWorldModel`.
+    """
+    if high_model is None:
+        g = goal.detach()
+        return (pred - g).abs().sum(-1)
+    cur: Any = high_model
+    for _ in range(8):
+        if cur is None:
+            break
+        fn = getattr(cur, 'matching_l1', None)
+        if callable(fn):
+            return fn(pred, goal)
+        cur = getattr(cur, 'model', None)
+    g = goal.detach()
+    return (pred - g).abs().sum(-1)
+
+
 def _match_goal_shape(goal: torch.Tensor, pred: torch.Tensor) -> torch.Tensor:
     """Align `goal` to `pred`'s shape.
 
@@ -95,12 +118,23 @@ class SubgoalCostAdapter(nn.Module):
     - reads pre-cached info['goal_emb'] (set by HierarchicalCEMSolver to the
       latent subgoal z̃_i) instead of re-encoding goal pixels every CEM iter.
     - uses L1 cost, not MSE.
+
+    When ``high_model`` is set (typical hierarchical eval), the same
+    `matching_l1` / projection head as the high-level model is applied to both
+    the low-level rollout endpoint and the cached subgoal so costs live in
+    the task subspace.
     """
 
-    def __init__(self, model_low: nn.Module, history_size: int = 3):
+    def __init__(
+        self,
+        model_low: nn.Module,
+        history_size: int = 3,
+        high_model: nn.Module | None = None,
+    ):
         super().__init__()
         self.wrapped = model_low
         self.history_size = int(history_size)
+        self.high_model = high_model
 
     def get_cost(self, info: dict, action_candidates: torch.Tensor) -> torch.Tensor:
         assert 'emb' in info and 'goal_emb' in info, (
@@ -121,7 +155,7 @@ class SubgoalCostAdapter(nn.Module):
         )
         pred = rollout[..., -1, :]  # (B, S, D)
         goal = _match_goal_shape(info['goal_emb'], pred)
-        return (pred - goal.detach()).abs().sum(-1)  # (B, S)
+        return matching_l1_from_chain(pred, goal, self.high_model)  # (B, S)
 
 
 class HighLevelCostAdapter(nn.Module):
@@ -147,7 +181,7 @@ class HighLevelCostAdapter(nn.Module):
         info_local = self.wrapped.rollout(info_local, l_candidates)
         pred = info_local['predicted_emb'][..., -1, :]  # (B, S, D)
         goal = _match_goal_shape(info_local['goal_emb'], pred)
-        cost_l1 = (pred - goal.detach()).abs().sum(-1)  # (B, S)
+        cost_l1 = matching_l1_from_chain(pred, goal, self.wrapped)  # (B, S)
 
         if self.prior_weight > 0.0:
             mu = self.wrapped.macro_mean.view(1, 1, 1, -1)
@@ -201,7 +235,11 @@ class HierarchicalCEMSolver:
         # Underlying CEMSolver instances. Each is wrapped in a cost adapter
         # so they expose a clean get_cost contract over pre-cached latents.
         self.solver_low = CEMSolver(
-            model=SubgoalCostAdapter(model_low, history_size=self.history_size),
+            model=SubgoalCostAdapter(
+                model_low,
+                history_size=self.history_size,
+                high_model=model_high,
+            ),
             device=device,
             seed=seed,
             **low_cfg,
@@ -438,7 +476,9 @@ class HierarchicalCEMSolver:
         z_now = info_low['emb']
         if z_now.dim() == 3:  # (B, T, D) -- take last
             z_now = z_now[:, -1]
-        dist = (z_now - self._cached_subgoal).abs().sum(-1)  # (n_envs,)
+        dist = matching_l1_from_chain(
+            z_now, self._cached_subgoal, self.model_high
+        )  # (n_envs,)
         if (dist < self.subgoal_threshold).all():
             self._cached_subgoal_idx += 1
             self._cached_subgoal = self._cached_subgoal_seq[:, self._cached_subgoal_idx]

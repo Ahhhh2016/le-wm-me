@@ -57,6 +57,7 @@ wm:
                         # MUST equal predictor.num_frames in the predictor block.
   num_preds: 1
   embed_dim: 192        # MUST match the frozen encoder's projector out-dim
+  matching_dim: null    # if set (e.g. 32), train LatentMatchingProjection for L1 costs
   action_dim: 2         # primitive action dim (per env step). Push-T = 2.
   share_pred_proj: false  # default: fresh trainable pred_proj (architecture §1.2)
 

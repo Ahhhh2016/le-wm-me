@@ -2,7 +2,9 @@
 
 HWM paper Sec. 3.1 -- two world models share a single encoder. The high-level
 model P^(2) operates on macro-action latents l in R^{d_l} and predicts the
-next waypoint latent z_{t_{k+1}} given (z_{t_k}, l_{t_k}).
+next waypoint latent z_{t_{k+1}} given (z_{t_k}, l_{t_k}). Optional
+``matching_head`` maps the shared 192-D projector output into a smaller
+task subspace where teacher forcing and planning costs apply L1.
 
 This module mirrors `JEPA` (jepa.py) so that `swm.policy.AutoCostModel`
 loads it transparently (loader scans for a `get_cost` attribute, see
@@ -20,7 +22,7 @@ class HighLevelWorldModel(nn.Module):
     Frozen (shared with the low-level JEPA): encoder, projector.
     Trainable: macro_encoder (A_psi), macro_embedder (d_l -> 192),
                predictor (ARPredictor with num_frames=history_size),
-               pred_proj.
+               pred_proj, matching_head (optional projection before L1 costs).
 
     Persistent buffers: macro_mean, macro_std -- empirical mean/std of
     A_psi outputs at training time, used by HierarchicalCEMSolver to
@@ -38,6 +40,7 @@ class HighLevelWorldModel(nn.Module):
         pred_proj,
         d_l,
         history_size,
+        matching_head=None,
     ):
         super().__init__()
 
@@ -47,6 +50,11 @@ class HighLevelWorldModel(nn.Module):
         self.macro_embedder = macro_embedder  # Linear(d_l, embed_dim) for AdaLN
         self.predictor = predictor
         self.pred_proj = pred_proj
+        # Maps embed_dim -> matching_dim for all latent costs (train + plan).
+        # Default Identity preserves full projector space (paper recipe).
+        self.matching_head = (
+            matching_head if matching_head is not None else nn.Identity()
+        )
 
         self.d_l = int(d_l)
         self.history_size = int(history_size)
@@ -76,6 +84,16 @@ class HighLevelWorldModel(nn.Module):
         self.encoder.eval()
         self.projector.eval()
         return self
+
+    def project_for_matching(self, z: torch.Tensor) -> torch.Tensor:
+        """Map encoder latents into the task subspace used for L1 matching."""
+        return self.matching_head(z)
+
+    def matching_l1(self, pred: torch.Tensor, goal: torch.Tensor) -> torch.Tensor:
+        """Per-sample L1 in matching space; reduction sum over feature dim."""
+        p = self.project_for_matching(pred)
+        g = self.project_for_matching(goal.detach())
+        return (p - g).abs().sum(-1)
 
     # ----------------------------------------------------------------------
     # JEPA-shaped public API
@@ -213,7 +231,7 @@ class HighLevelWorldModel(nn.Module):
             goal_emb = goal_emb.unsqueeze(1).expand_as(pred_emb)
         elif goal_emb.dim() == pred_emb.dim() + 1:
             goal_emb = goal_emb[..., -1, :]
-        cost = (pred_emb - goal_emb.detach()).abs().sum(-1)  # (B, S)
+        cost = self.matching_l1(pred_emb, goal_emb)  # (B, S)
         return cost
 
     def get_cost(self, info_dict: dict, action_candidates: torch.Tensor):

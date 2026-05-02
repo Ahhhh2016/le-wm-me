@@ -30,12 +30,13 @@ import stable_worldmodel as swm
 from data import WaypointSubtrajectoryDataset
 from hwm import HighLevelWorldModel
 from jepa import JEPA
-from module import ARPredictor, Embedder, MLP, MacroActionEncoder
+from module import ARPredictor, Embedder, LatentMatchingProjection, MLP, MacroActionEncoder
 from planner import (
     HierarchicalCEMSolver,
     HighLevelCostAdapter,
     SubgoalCostAdapter,
     _match_goal_shape,
+    matching_l1_from_chain,
 )
 
 
@@ -61,7 +62,7 @@ def _build_tiny_jepa(embed_dim: int = 192, action_dim: int = 10):
                 projector=projector, pred_proj=pred_proj)
 
 
-def _build_tiny_hwm(jepa: JEPA, d_l: int = 10, action_block: int = 10):
+def _build_tiny_hwm(jepa: JEPA, d_l: int = 10, action_block: int = 10, matching_dim=None):
     macro_encoder = MacroActionEncoder(input_dim=action_block, d_l=d_l, max_blocks=14)
     macro_embedder = nn.Linear(d_l, 192)
     predictor = ARPredictor(
@@ -70,11 +71,15 @@ def _build_tiny_hwm(jepa: JEPA, d_l: int = 10, action_block: int = 10):
         dropout=0.0, emb_dropout=0.0,
     )
     pred_proj = MLP(192, 2048, 192, norm_fn=nn.BatchNorm1d)
+    matching_head = (
+        LatentMatchingProjection(192, matching_dim) if matching_dim is not None else None
+    )
     return HighLevelWorldModel(
         encoder=jepa.encoder, projector=jepa.projector,
         macro_encoder=macro_encoder, macro_embedder=macro_embedder,
         predictor=predictor, pred_proj=pred_proj,
         d_l=d_l, history_size=3,
+        matching_head=matching_head,
     )
 
 
@@ -119,6 +124,33 @@ class Test02SharedEncoder(unittest.TestCase):
         self.assertEqual(z_jepa.shape, z_hwm.shape)
         # Equal because the encoder + projector references are shared (same nn.Module).
         self.assertLess((z_jepa - z_hwm).abs().max().item(), 1e-6)
+
+
+class Test02bLatentMatchingHead(unittest.TestCase):
+    """Optional matching_head projects 192-D latents before L1 costs."""
+
+    def test_projection_output_dim(self):
+        torch.manual_seed(0)
+        jepa = _build_tiny_jepa().eval()
+        hwm = _build_tiny_hwm(jepa, matching_dim=16).eval()
+        z = torch.randn(2, 3, 192)
+        l = torch.randn(2, 3, 10)
+        e = hwm.macro_embedder(l)
+        pred = hwm.predict(z, e)
+        proj = hwm.project_for_matching(pred)
+        self.assertEqual(proj.shape, (2, 3, 16))
+        cost = hwm.matching_l1(pred[:, -1], torch.randn(2, 192))
+        self.assertEqual(cost.shape, (2,))
+
+    def test_matching_l1_chain_identity_head(self):
+        torch.manual_seed(0)
+        jepa = _build_tiny_jepa().eval()
+        hwm = _build_tiny_hwm(jepa).eval()
+        p = torch.randn(2, 4, 192)
+        g = torch.randn(2, 4, 192)
+        c1 = matching_l1_from_chain(p, g, hwm)
+        c2 = (p - g.detach()).abs().sum(-1)
+        self.assertLess((c1 - c2).abs().max().item(), 1e-5)
 
 
 class Test03MacroEmbedderBoundary(unittest.TestCase):
