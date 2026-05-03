@@ -34,6 +34,11 @@ policy_high: ???            # required when policy != 'random'
 policy_cache_dir: null
 policy_high_cache_dir: null
 
+# true: model_high.pred_proj = model_low.pred_proj after load so low CEM and high
+# subgoals share one pred space (required when train had share_pred_proj: false).
+# false: keep both checkpoints’ pred_proj (reproduces the coordinate mismatch).
+share_pred_proj_at_eval: true
+
 plan_config:                # passed to WorldModelPolicy -> solver.configure as `config`
   horizon: 5                # low-level pred horizon (LeWM blocks)
   receding_horizon: 5       # k = 5 LeWM blocks (HWM Tab. 10 Push-T)

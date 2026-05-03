@@ -121,6 +121,24 @@ def run(cfg: DictConfig):
             if hasattr(model_high, 'projector') and hasattr(model_low, 'projector'):
                 model_high.projector = model_low.projector
 
+            # SubgoalCostAdapter rolls out with model_low.predict (low pred_proj) but
+            # compares to subgoals from model_high.rollout (high pred_proj). Unless
+            # training used share_pred_proj, those are different linear maps in R^D.
+            # Alias at eval so L1 costs live in one coordinate system (same idea as
+            # sharing encoder/projector above). Set share_pred_proj_at_eval=false to
+            # reproduce the old mismatch when debugging.
+            share_pred_proj_at_eval = cfg.get("share_pred_proj_at_eval", True)
+            if share_pred_proj_at_eval and hasattr(model_high, "pred_proj") and hasattr(
+                model_low, "pred_proj"
+            ):
+                if isinstance(model_low.pred_proj, torch.nn.Identity):
+                    print(
+                        "Hierarchical eval: low pred_proj is Identity; "
+                        "not aliasing high.pred_proj (subgoal space may still mismatch)."
+                    )
+                else:
+                    model_high.pred_proj = model_low.pred_proj
+
             config = swm.PlanConfig(**cfg.plan_config)
             solver = hydra.utils.instantiate(
                 cfg.solver, model_low=model_low, model_high=model_high
