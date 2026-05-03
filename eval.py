@@ -26,6 +26,15 @@ def img_transform(cfg):
     return transform
 
 
+def _policy_run_id_for_loader(policy: str) -> str:
+    """stable_worldmodel appends '_object.ckpt' to the run id; strip if already present."""
+    s = str(policy)
+    suffix = "_object.ckpt"
+    if s.endswith(suffix):
+        return s[: -len(suffix)]
+    return s
+
+
 def get_episodes_length(dataset, episodes):
     col_name = "episode_idx" if "episode_idx" in dataset.column_names else "ep_idx"
 
@@ -93,11 +102,15 @@ def run(cfg: DictConfig):
         is_hierarchical = "Hierarchical" in str(cfg.solver._target_)
 
         if is_hierarchical:
-            model_low = swm.policy.AutoCostModel(cfg.policy).to("cuda").eval()
+            model_low = swm.policy.AutoCostModel(
+                _policy_run_id_for_loader(cfg.policy)
+            ).to("cuda").eval()
             model_low.requires_grad_(False)
             model_low.interpolate_pos_encoding = True
 
-            model_high = swm.policy.AutoCostModel(cfg.policy_high).to("cuda").eval()
+            model_high = swm.policy.AutoCostModel(
+                _policy_run_id_for_loader(cfg.policy_high)
+            ).to("cuda").eval()
             model_high.requires_grad_(False)
             model_high.interpolate_pos_encoding = True
 
@@ -114,7 +127,7 @@ def run(cfg: DictConfig):
                 cfg.solver, model_low=model_low, model_high=model_high
             )
         else:
-            model = swm.policy.AutoCostModel(cfg.policy)
+            model = swm.policy.AutoCostModel(_policy_run_id_for_loader(cfg.policy))
             model = model.to("cuda")
             model = model.eval()
             model.requires_grad_(False)
